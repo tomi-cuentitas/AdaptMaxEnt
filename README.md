@@ -42,7 +42,7 @@ To overcome these challenges, this project introduces **adaptive Max-Ent dynamic
 
 
 <p align="center">
-<img src="figs/LR_time_lattice_tikz_ada.jpg" alt="Logo" style="width:300px;height:300px;">
+<img src="figs/LR_time_lattice_tikz_ada.jpg" alt="Logo">
 </p>
 
 
