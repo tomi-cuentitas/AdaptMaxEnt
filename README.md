@@ -30,10 +30,11 @@ The **restricted Max-Ent framework** offers a tractable way to simulate dynamics
 2. **Scalar Product $(\cdot, \cdot)_{\sigma}^{(s)}$**  
    The scalar product can take the form of:
    - **Kubo-Mori-Bogoliubov (KMB)**: Accurate but computationally expensive.  
-   - **Covariance Scalar Product**: A robust alternative that tightly bounds the KMB product.
+   - **Covariance Scalar Product**: A robust alternative that tightly bounds the KMB product. This is the one which we will use in these examples. 
 
-3. **Mean-Field Projections**  
-   Simplify $n$-body correlation states $\mathbf{K}$ into $m_0$-body correlation states $\mathbf{K}^{\rm (MF)}$ to reduce complexity.
+3. **Mean-Field Projections**
+   Simplify states $\mathbf{K}$ involving costly $n$-body correlations by projecting them into their $m_0$-body components, with $m_0 \ll n$, yielding more tractable states $\mathbf{K}^{\rm (MF)}$.
+
 
 Despite its advantages, restricted Max-Ent has limitations, including high computational cost and potential errors if the fixed basis $B$ fails to account for all statistically relevant observables.
 
