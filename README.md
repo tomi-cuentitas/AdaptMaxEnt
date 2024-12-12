@@ -42,11 +42,11 @@ To overcome these challenges, this project introduces **adaptive Max-Ent dynamic
 
 
 <p align="center">
-<img src="figs/LR_time_lattice_tikz_ada.jpg" alt="Logo">
+  <img src="figs/LR_time_lattice_tikz_ada.jpg" alt="Lieb-Robinson Time Lattice Figure" width="500" />
 </p>
+*Figure 1: Illustration of the Lieb-Robinson bounds, an integral idea of Adaptive Max-Ent simulations for geometrically local Hamiltonians.*
 
 
-*Figure 1: Illustration of the Lieb-Robinson time lattice used in Adaptive Max-Ent simulations.*
 The method adapts by monitoring the error measured via a figure of merit, the $p$-th partial sum ${\cal K}_p$ and updating when it exceeds a given tolerance $\epsilon$. This results in a reliable and efficient framework characterized by several parameters $\ell$, $\epsilon$, $m_0$.
 
 ---
