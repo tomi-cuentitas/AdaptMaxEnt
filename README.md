@@ -110,7 +110,6 @@ $$
   +J_y \sigma_{j}^{y} \sigma_{j+1}^{y}
   +J_z \sigma_{j}^{z} \sigma_{j+1}^{z}
   \bigg),
-
 $$
 
 where $J_x, J_y, J_z$ are the system's parameters, $\sigma_j^{x,y,z}$ are the standard Pauli operators with support on the $j$-th site of the lattice.
