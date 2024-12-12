@@ -82,12 +82,14 @@ To set up the environment for this project:
    ```bash
    git clone https://github.com/your-username/max-ent-evolutions.git
    cd max-ent-evolutions
+```
 
 ### 2. Install Dependencies
 
 Use `pip` to install the required Python libraries:  
    ```bash
    pip install -r requirements.txt
+```
 
 ### 3. Set up a Virtual Environment (Optional)
 
@@ -96,6 +98,7 @@ To avoid conflicts with your system Python installation, create and activate a v
   python -m venv venv
   source venv/bin/activate  # On Windows: venv\Scripts\activate
   pip install -r requirements.txt
+```
 
 ## Usage
 
