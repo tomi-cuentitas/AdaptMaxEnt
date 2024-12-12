@@ -25,7 +25,7 @@ This project implements a recipe for **adaptive Max-Ent dynamics**, which shares
 The **restricted Max-Ent framework** offers a tractable way to simulate dynamics on a smaller subspace via a (weighted-) linear projection $\pi_{B,\sigma}$ from the full observable space ${\cal A}$ onto a smaller, more manageable subspace ${\cal A}_B$, spanned by a reduced basis. Key objects of interest in this framework include:
 
 1. **Low-Dimensional Basis of Observables $B_{\ell}$**  
-   Typically, the basis is constructed to include \(\ell\) iterated commutators of the Hamiltonian and a relevant seed operator, such as the initial state \({\bf K}_0 = \log(\rho(0))\).
+   Typically, the basis is constructed to include $\ell$ iterated commutators of the Hamiltonian and a relevant seed operator, such as the initial state ${\bf K}_0 = \log(\rho(0))$.
 
 2. **Scalar Product $(\cdot, \cdot)_{\sigma}^{(s)}$**  
    The scalar product can take the form of:
