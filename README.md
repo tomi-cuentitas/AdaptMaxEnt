@@ -39,8 +39,12 @@ Despite its advantages, restricted Max-Ent has limitations, including high compu
 
 ### Adaptive Max-Ent
 To overcome these challenges, this project introduces **adaptive Max-Ent dynamics**, an autonomous method that updates the geometry (basis and scalar product) and applies mean-field projections during discrete simulation steps. This is particularly effective for **geometrically local Hamiltonians**, as their dynamics are constrained by Lieb-Robinson bounds, which restricted Max-Ent respects by design.
-![Lieb-Robinson Time Lattice Figure](https://github.com/tomi-cuentitas/AdaptMaxEnt/blob/main/figs/LR_time_lattice_tikz_ada.pdf)
 
+<p>
+    <img src="https://github.com/tomi-cuentitas/AdaptMaxEnt/blob/main/figs/LR_time_lattice_tikz_ada.pdf" width="220" height="240" />
+</p>
+
+*Figure 1: Illustration of the Lieb-Robinson time lattice used in Adaptive Max-Ent simulations.*
 The method adapts by monitoring the error measured via a figure of merit, the $p$-th partial sum ${\cal K}_p$ and updating when it exceeds a given tolerance $\epsilon$. This results in a reliable and efficient framework characterized by several parameters $\ell$, $\epsilon$, $m_0$.
 
 ---
