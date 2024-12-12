@@ -96,3 +96,23 @@ To avoid conflicts with your system Python installation, create and activate a v
   python -m venv venv
   source venv/bin/activate  # On Windows: venv\Scripts\activate
   pip install -r requirements.txt
+
+## Usage
+
+In this documentation, we will be interested in a $L=7$ one-dimensional spin-$1/2$ Heisenberg XYZ system, with Hamiltonian
+
+$$
+  {\bf H} = -\frac{1}{2}\sum_{j=1}^{L} \bigg(
+  J_x \sigma_{j}^{x} \sigma_{j+1}^{x} 
+  +J_y \sigma_{j}^{y} \sigma_{j+1}^{y}
+  +J_z \sigma_{j}^{z} \sigma_{j+1}^{z}
+  \bigg),
+
+$$
+
+where $J_x, J_y, J_z$ are the system's parameters, $\sigma_j^{x,y,z}$ are the standard Pauli operators with support on the $j$-th site of the lattice.
+This Hamiltonian, in the tutorials, can be constructed in a simple way by employing the ALPS library and a dictionary of parameters.
+
+## Examples
+
+In Tutorials, a series of tutorials can be found, showcasing different examples and behaviours of interest. 
