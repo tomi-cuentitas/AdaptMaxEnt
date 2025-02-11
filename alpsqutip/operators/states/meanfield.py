@@ -3,7 +3,7 @@ Module that implements a meanfield approximation of a Gibbsian state
 """
 
 from functools import reduce
-from itertools import combinations, permutations
+from itertools import combinations
 from typing import Optional, Union
 
 import numpy as np
@@ -27,7 +27,11 @@ from alpsqutip.operators.states.states import (
 
 
 def one_body_from_qutip_operator(
-    operator: Union[Operator, Qobj], sigma0: Optional[DensityOperatorMixin] = None
+    operator: Union[Operator, Qobj],
+    sigma0: Optional[DensityOperatorMixin] = None,
+    local_states_qutip: Optional[dict] = None,
+    keep_remainder: bool = True,
+    system: Optional = None,
 ) -> SumOperator:
     """
     Decompose a qutip operator as a sum of an scalar term,
@@ -42,6 +46,23 @@ def one_body_from_qutip_operator(
     sigma0 : DensityOperatorMixin, optional
         A Density matrix. If None (default) it is assumed to be
         the maximally mixed state.
+    local_states_qutip: list (Optional)
+        A list of qutip operators used as the reference
+        to build the local state
+
+    keep_remainder: bool (optional)
+        If `True` (default) the result includes
+        a term with the difference between the obtained
+        one-body operator and the original operator, in a
+        way that the result is algebraically equivalt to
+        the input `operator`.
+        If `False`, the result is a projection over the
+        one-body subspace, relative to the reference state.
+
+    system: SystemDescriptor (optional)
+        If the system cannot be inferred from `sigma0`, or
+        `operator`, the result is associated
+        to the system `system`.
 
     Returns
     -------
@@ -51,21 +72,25 @@ def one_body_from_qutip_operator(
 
     """
 
-    system = sigma0.system if sigma0 is not None else None
-    if system is None:
-        system = operator.system if isinstance(operator, Operator) else None
+    system = (
+        sigma0.system
+        if sigma0 is not None
+        else (operator.system if isinstance(operator, Operator) else system)
+    )
 
     if isinstance(operator, Qobj):
         operator = QutipOperator(operator, system)
 
-    if sigma0 is None:
-        sigma0 = ProductDensityOperator({}, system=operator.system)
-        sigma0 = sigma0 / sigma0.tr()
-        system = sigma0.system
-
-    local_states = {
-        name: sigma0.partial_trace([name]).to_qutip() for name in system.dimensions
-    }
+    if local_states_qutip is None:
+        if sigma0 is None:
+            sigma0 = ProductDensityOperator({}, system=operator.system)
+            sigma0 = sigma0 / sigma0.tr()
+            system = sigma0.system
+        local_states = {
+            name: sigma0.partial_trace([name]).to_qutip() for name in system.dimensions
+        }
+    else:
+        local_states = local_states_qutip
 
     local_terms = []
     averages = 0
@@ -97,17 +122,28 @@ def one_body_from_qutip_operator(
 
     average_term = ScalarOperator(averages / len(local_terms), system)
     one_body_term = OneBodyOperator(tuple(local_terms), system=system)
-    remaining = (operator - one_body_term - average_term).to_qutip_operator()
-    return SumOperator(
-        tuple(
-            (
-                average_term,
-                one_body_term,
-                remaining,
-            )
-        ),
-        system,
-    )
+    if keep_remainder:
+        remaining = (operator - one_body_term - average_term).to_qutip_operator()
+        return SumOperator(
+            tuple(
+                (
+                    average_term,
+                    one_body_term,
+                    remaining,
+                )
+            ),
+            system,
+        )
+    else:
+        return SumOperator(
+            tuple(
+                (
+                    average_term,
+                    one_body_term,
+                )
+            ),
+            system,
+        )
 
 
 def project_to_n_body_operator(operator, nmax=1, sigma=None):
@@ -117,10 +153,13 @@ def project_to_n_body_operator(operator, nmax=1, sigma=None):
 
     ``operator`` can be a SumOperator or a Product Operator.
     """
-    mul_func = lambda x, y: x * y
+    def mul_func(x, y):
+        return x * y
 
     if isinstance(operator, SumOperator):
-        terms = operator.simplify().flat().terms
+        operator = operator.flat()
+    if isinstance(operator, SumOperator):
+        terms = operator.terms
     else:
         terms = (operator,)
 
@@ -163,7 +202,7 @@ def project_to_n_body_operator(operator, nmax=1, sigma=None):
                 if prefactor == 0:
                     continue
                 sub_site_ops = {site: fluct_op[site] for site in subcomb}
-                terms_by_factors[nmax].append(
+                subterms.append(
                     ProductOperator(sub_site_ops, prefactor, system)
                 )
 
@@ -278,7 +317,6 @@ def self_consistent_quadratic_mfa(ham: Operator):
 
     """
     from alpsqutip.operators.quadratic import (
-        QuadraticFormOperator,
         build_quadratic_form_from_operator,
     )
 

@@ -296,6 +296,7 @@ def project_qutip_to_m_body(op_qutip: Qobj, m_max=2, local_sigmas=None) -> Qobj:
     decompose = factorize_qutip_operator(op_qutip)
     # Build the local states
     if local_sigmas is None:
+        print("local_sigmas=None")
         local_sigmas = [1 / dim for dim in dimensions]
     for term in decompose:
         term = [t.tidyup() for t in term]

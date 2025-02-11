@@ -53,7 +53,7 @@ def empty_op(op: Qobj) -> bool:
         if hasattr(op, "sites_op"):
             if op.prefactor == 0:
                 return True
-            return any(empty_op(op_l) for op_l in sites_op.values())
+            return any(empty_op(op_l) for op_l in op.sites_op.values())
         raise ValueError(f"Operator of type {type(op)} is not allowed.")
     return data_is_zero(op.data)
 
