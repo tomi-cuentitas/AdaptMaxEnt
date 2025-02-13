@@ -30,6 +30,7 @@ We will introduce two examples of **MF-aided Adaptive Max-Ent simulations**:
 """
 # In[1]:
 import sys
+
 ALPSQUTIPPATH = "../"
 sys.path.insert(1, ALPSQUTIPPATH)
 
@@ -67,7 +68,7 @@ plt.rcParams.update(
         "xtick.labelsize": 12,  # Taille des labels des ticks sur l'axe X
         "ytick.labelsize": 12,  # Taille des labels des ticks sur l'axe Y
         "font.family": "serif",  # Police de type "serif" pour
-                                 # un rendu professionnel
+        # un rendu professionnel
         "axes.linewidth": 1.5,  # Largeur des bordures des axes
         "grid.alpha": 0.5,  # Transparence des grilles
     }
@@ -92,8 +93,7 @@ def lieb_robinson_speed(parameters):
                             + parameters["Jx"] * parameters["Jy"]
                             + parameters["Jy"] * parameters["Jz"]
                         ),
-                        -2 * parameters["Jx"] *
-                        parameters["Jy"] * parameters["Jz"],
+                        -2 * parameters["Jx"] * parameters["Jy"] * parameters["Jz"],
                     ]
                 )
             )
@@ -120,8 +120,7 @@ try:
     with open(f"{SIMULATIONS_FILE_PREFIX}.pkl", "br") as in_file:
         simulations = pickle.load(in_file)
 
-    with open(f"{SIMULATIONS_FILE_PREFIX}_{str(datetime.now())}.bkp",
-              "bw") as out_file:
+    with open(f"{SIMULATIONS_FILE_PREFIX}_{str(datetime.now())}.bkp", "bw") as out_file:
         pickle.dump(simulations, out_file)
 except Exception:
     simulations = {}
@@ -149,33 +148,26 @@ vLR = lieb_robinson_speed(params)
 system = SystemDescriptor(
     model=model_from_alps_xml(MODELS_LIB_FILE, "spin"),
     graph=graph_from_alps_xml(
-        LATTICE_LIB_FILE, "open chain lattice",
-        parms={"L": params["size"], "a": 1}
+        LATTICE_LIB_FILE, "open chain lattice", parms={"L": params["size"], "a": 1}
     ),
     parms={"h": 0, "J": params["Jx"]},
 )
 
 sites = list(system.sites)
 sx_ops = [
-    system.site_operator("Sx", "1[" + str(a) + "]")
-    for a in range(len(system.sites))
+    system.site_operator("Sx", "1[" + str(a) + "]") for a in range(len(system.sites))
 ]
 sy_ops = [
-    system.site_operator("Sy", "1[" + str(a) + "]")
-    for a in range(len(system.sites))
+    system.site_operator("Sy", "1[" + str(a) + "]") for a in range(len(system.sites))
 ]
 sz_ops = [
-    system.site_operator("Sz", "1[" + str(a) + "]")
-    for a in range(len(system.sites))
+    system.site_operator("Sz", "1[" + str(a) + "]") for a in range(len(system.sites))
 ]
 
 H = (
-    params["Jx"] * sum(sx_ops[i] * sx_ops[i + 1]
-                       for i in range(params["size"] - 1))
-    + params["Jy"] * sum(sy_ops[i] * sy_ops[i + 1]
-                         for i in range(params["size"] - 1))
-    + params["Jz"] * sum(sz_ops[i] * sz_ops[i + 1]
-                         for i in range(params["size"] - 1))
+    params["Jx"] * sum(sx_ops[i] * sx_ops[i + 1] for i in range(params["size"] - 1))
+    + params["Jy"] * sum(sy_ops[i] * sy_ops[i + 1] for i in range(params["size"] - 1))
+    + params["Jz"] * sum(sz_ops[i] * sz_ops[i + 1] for i in range(params["size"] - 1))
 )
 idop = system.site_operator("identity", sites[0])
 
@@ -268,15 +260,12 @@ def run_exact_simulation(simulation):
             obs_op, block = obs_op_ss
             if block is not None:
                 rho_loc = rho.ptrace(block)
-                expect_values[obs_key].append(
-                    np.real(qutip.expect(rho_loc, obs_op)))
+                expect_values[obs_key].append(np.real(qutip.expect(rho_loc, obs_op)))
             else:
-                expect_values[obs_key].append(
-                    np.real(qutip.expect(rho, obs_op)))
+                expect_values[obs_key].append(np.real(qutip.expect(rho, obs_op)))
 
     qutip.mesolve(
-        H=H.to_qutip(), rho0=K0.to_qutip(), tlist=TIMESPAN,
-        e_ops=callback_compute_obs
+        H=H.to_qutip(), rho0=K0.to_qutip(), tlist=TIMESPAN, e_ops=callback_compute_obs
     )
     simulation["ev_obs_ex"] = expect_values
 
@@ -396,16 +385,14 @@ def run_maxent_simulation(current_simulation, estimate_error):
     )
 
     # to be used in storing the values of the partial sum
-    local_bound_error_ell = current_simulation.setdefault(
-        "local_bound_error_ell", [])
+    local_bound_error_ell = current_simulation.setdefault("local_bound_error_ell", [])
     # to be used in storing the spectral norm of the Hij tensor at each
     # actualization of the (orthonormalized) basis
     spectral_norm_hij_tensor_ell = current_simulation.setdefault(
         "spectral_norm_hij_tensor_ell", []
     )
     # Norm of the orthogonal component of the commutators
-    instantaneous_w_errors = current_simulation.setdefault(
-        "instantaneous_w_errors", [])
+    instantaneous_w_errors = current_simulation.setdefault("instantaneous_w_errors", [])
 
     # Start the computation
 
@@ -455,13 +442,11 @@ def run_maxent_simulation(current_simulation, estimate_error):
         print("t=", time)
         # Evolve the state phi(t) for a small time window
         phi_local = np.real(
-            linalg.expm(hij_tensor_act * (time - local_t_value)
-                        ) @ phi0_proj_act
+            linalg.expm(hij_tensor_act * (time - local_t_value)) @ phi0_proj_act
         )
 
         # Compute the new K-state from the orthogonal basis and phi(t)
-        k_local = me.Kstate_from_phi_basis(
-            phi=-phi_local, basis=orth_basis_act)
+        k_local = me.Kstate_from_phi_basis(phi=-phi_local, basis=orth_basis_act)
 
         # Normalize to obtain the updated density matrix sigma(t)
         sigma_local = safe_exp_and_normalize(k_local)[0]
@@ -513,14 +498,10 @@ def run_maxent_simulation(current_simulation, estimate_error):
             ]
 
             print(f"      * project to {m_0}-bodies")
-            hbb_act = [
-                project_qutip_to_m_body(op, m_0, local_states)
-                for op in hbb_act
-            ]
+            hbb_act = [project_qutip_to_m_body(op, m_0, local_states) for op in hbb_act]
 
             print("      * orthogonalizing")
-            orth_basis_act = me.orthogonalize_basis(
-                basis=hbb_act, sp=sp_local)
+            orth_basis_act = me.orthogonalize_basis(basis=hbb_act, sp=sp_local)
             bases_deep = len(orth_basis_act)
 
             # Recompute the Hamiltonian tensor and project the state
@@ -528,9 +509,7 @@ def run_maxent_simulation(current_simulation, estimate_error):
             hij_tensor_act, w_errors = me.fn_Hij_tensor_with_errors(
                 generator=H.to_qutip(), basis=orth_basis_act, sp=sp_local
             )
-            print(
-                f"    bases updated with a depth of {bases_deep}",
-                datetime.now())
+            print(f"    bases updated with a depth of {bases_deep}", datetime.now())
             instantaneous_w_errors.append(np.real(w_errors))
             spectral_norm_hij_tensor_ell.append(linalg.norm(hij_tensor_act))
             phi0_proj_act = me.project_op(k_local, orth_basis_act, sp_local)
@@ -538,9 +517,7 @@ def run_maxent_simulation(current_simulation, estimate_error):
         number_of_commutators_ell.append(number_of_commutators_ell[-1])
         no_acts_ell.append(actualizations)
 
-    current_simulation["velocity_mu_ell"] = np.array(
-        spectral_norm_hij_tensor_ell
-    )
+    current_simulation["velocity_mu_ell"] = np.array(spectral_norm_hij_tensor_ell)
     times_act_ell = np.array(saved_cut_times_index_ell)
     current_simulation["times_act_ell"] = times_act_ell
     current_simulation["velocity_PS_ell"] = np.array(
@@ -555,6 +532,7 @@ def run_maxent_simulation(current_simulation, estimate_error):
 #
 
 # In[ ]:
+
 
 def main():
     """
@@ -573,13 +551,14 @@ def main():
                     }
                 )
 
-    for estimate_error in (estimate_error_by_weights,
-                           estimate_error_by_partial_sum):
+    for estimate_error in (estimate_error_by_weights, estimate_error_by_partial_sum):
         for approx_parms in cases:
-            simulation_name = (f"({approx_parms['m0']},"
-                               f"{approx_parms['chosen_depth']},"
-                               f"{approx_parms['eps']},"
-                               f"{repr(estimate_error)[28:][:-19]})")
+            simulation_name = (
+                f"({approx_parms['m0']},"
+                f"{approx_parms['chosen_depth']},"
+                f"{approx_parms['eps']},"
+                f"{repr(estimate_error)[28:][:-19]})"
+            )
             simulations[simulation_name] = {
                 "parms": approx_parms,
                 "date": datetime.now(),
@@ -587,8 +566,7 @@ def main():
             }
             try:
                 print("Simulation", simulation_name)
-                run_maxent_simulation(
-                    simulations[simulation_name], estimate_error)
+                run_maxent_simulation(simulations[simulation_name], estimate_error)
             except linalg.ArpackNoConvergence:
                 continue
 

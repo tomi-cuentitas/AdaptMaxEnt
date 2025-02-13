@@ -5,7 +5,7 @@ import numpy as np
 
 # from alpsqutip.operators import safe_expm_and_normalize
 from qutip import entropy_vn, fidelity, jmat, qeye, tensor
-from qutip.qobj import Qobj
+from qutip import Qobj
 
 from alpsqutip.scalarprod import gram_matrix, orthogonalize_basis, project_op
 from alpsqutip.operators.states import safe_exp_and_normalize
