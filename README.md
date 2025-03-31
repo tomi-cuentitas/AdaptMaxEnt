@@ -1,8 +1,9 @@
 # AdaptMaxEnt
 ## Adaptive Max-Ent Restricted Evolutions for Local Hamiltonians
 
-This repository contains an implementation of Adaptive Max-Ent Restricted Evolutions for local Hamiltonians.
-
+This repository contains an implementation for the exploration of different Adaptive Max-Ent Restricted Evolutions for local Hamiltonians.
+The code is meant to be the basis for a future and more comprehensive library but at this stage is mainly implemented via Python libraries to be used in Jupyter Notebooks,
+a structure suited for exploration of dynamics and development. 
 ---
 
 ## Table of Contents
@@ -35,8 +36,7 @@ The **restricted Max-Ent framework** offers a tractable way to simulate dynamics
 3. **Mean-Field Projections**
    Simplify states $\mathbf{K}$ involving costly $n$-body correlations by projecting them into their $m_0$-body components, with $m_0 \ll n$, yielding more tractable states $\mathbf{K}^{\rm (MF)}$.
 
-
-Despite its advantages, restricted Max-Ent has limitations, including high computational cost and potential errors if the fixed basis $B$ fails to account for all statistically relevant observables.
+Despite its advantages, restricted Max-Ent has its limitations, including high computational cost and potential errors if the fixed basis $B$ fails to account for all statistically relevant observables.
 
 ### Adaptive Max-Ent
 To overcome these challenges, this project introduces **adaptive Max-Ent dynamics**, an autonomous method that updates the geometry (basis and scalar product) and applies mean-field projections during discrete simulation steps. This is particularly effective for **geometrically local Hamiltonians**, as their dynamics are constrained by Lieb-Robinson bounds, which restricted Max-Ent respects by design.
@@ -101,6 +101,11 @@ To avoid conflicts with your system Python installation, create and activate a v
   pip install -r requirements.txt
 ```
 
+### 4. Exploration
+
+With everything installed, the only steps left are to write your own Adaptive Max-Ent evolutions, see Tutorials
+for some examples.
+
 ## Usage
 
 In this documentation, we will be interested in a $L=7$ one-dimensional spin-$1/2$ Heisenberg XYZ system, with Hamiltonian
@@ -116,6 +121,8 @@ $$
 where $J_x, J_y, J_z$ are the system's parameters, $\sigma_j^{x,y,z}$ are the standard Pauli operators with support on the $j$-th site of the lattice.
 This Hamiltonian, in the tutorials, can be constructed in a simple way by employing the ALPS library and a dictionary of parameters.
 
+From there on, one can define an inital state and start using adaptive Max-Ent evolutions to evolve the system for arbitrarily long-term scales requiring hundreds of 
+thousands of actualizations.
 ## Examples
 
 In Tutorials, a series of tutorials can be found, showcasing different examples and behaviours of interest. 
