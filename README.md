@@ -101,8 +101,8 @@ To avoid conflicts with your system Python installation, create and activate a v
 
 ### 4. Exploration
 
-With everything installed, the only steps left are to write your own Adaptive Max-Ent evolutions, see Tutorials
-for some examples.
+With everything installed, the only steps left are to write your own Adaptive Max-Ent evolutions in Jupyter Notebook 
+using our libraries, see Tutorials for some examples.
 
 ## Usage
 
