@@ -112,7 +112,8 @@ def fn_Hij_tensor(basis, sp: Callable, generator):
 
 def fn_Hij_tensor_with_errors(basis, sp: Callable, generator):
     """Compute the tensor Hij and the norm of the orthogonal projection"""
-    comm_H_ops = [commutator(-1j * generator, op2) for op2 in basis]
+    hgen = -1j * generator
+    comm_H_ops = [commutator(hgen, op2) for op2 in basis]
     local_Hij = np.array(
         [[sp(op1, comm_op) for comm_op in comm_H_ops] for op1 in basis]
     )
@@ -122,7 +123,7 @@ def fn_Hij_tensor_with_errors(basis, sp: Callable, generator):
         (max(full_sq - proj_sq, 0.0)) ** 0.5
         for full_sq, proj_sq in zip(comm_full_norms_sq, proj_comm_norms_sq)
     ]
-    return np.real(local_Hij), errors_w
+    return local_Hij, errors_w
 
 
 def gram_matrix(basis, sp: Callable):
@@ -339,6 +340,7 @@ def mft_state_it(K, sigma, max_it):
         - K_one_body: The one-body component of the operator K, an AlpsQuTip.one_body_operator object.
         - sigma_one_body: The one-body state normalized through the MFT process.
     """
+
     for i in range(max_it):
         K_one_body = one_body_from_qutip_operator(K).terms[1]
         sigma_one_body = safe_exp_and_normalize(K_one_body)[0]

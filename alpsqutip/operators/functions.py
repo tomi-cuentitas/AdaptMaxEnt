@@ -69,13 +69,18 @@ def eigenvalues(
     maxiter: int = 100000,
 ) -> np_array:
     """Compute the eigenvalues of operator"""
+    from scipy.sparse.linalg import ArpackNoConvergence
 
     qutip_op = operator.to_qutip() if isinstance(operator, Operator) else operator
     if eigvals > 0 and qutip_op.data.shape[0] < eigvals:
         sparse = False
         eigvals = 0
-
-    return qutip_op.eigenenergies(sparse, sort, eigvals, tol, maxiter)
+    try:
+        return qutip_op.eigenenergies(sparse, sort, eigvals, tol, maxiter)
+    except ArpackNoConvergence:
+        if sparse == False or eigvals==0:
+            raise
+        return eigenenergies(operator, sparse, sort, 2*eigvals, tol, 2*maxiter)[:eigvals]
 
 
 def hermitian_and_antihermitian_parts(operator) -> Tuple[Operator]:
