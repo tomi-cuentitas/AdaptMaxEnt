@@ -1,9 +1,7 @@
 # AdaptMaxEnt
 ## Adaptive Max-Ent Restricted Evolutions for Local Hamiltonians
 
-This repository contains an implementation for the exploration of different Adaptive Max-Ent Restricted Evolutions for local Hamiltonians.
-The code is meant to be the basis for a future and more comprehensive library but at this stage is mainly implemented via Python libraries to be used in Jupyter Notebooks,
-a structure suited for exploration of dynamics and development. 
+##### This repository contains an implementation for the exploration of different Adaptive Max-Ent Restricted Evolutions for local Hamiltonians. The code is meant to be the basis for a future and more comprehensive library but at this stage is mainly implemented via Python libraries to be used in Jupyter Notebooks, a structure suited for exploration of dynamics and development
 ---
 
 ## Table of Contents
