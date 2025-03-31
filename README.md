@@ -119,8 +119,9 @@ $$
 where $J_x, J_y, J_z$ are the system's parameters, $\sigma_j^{x,y,z}$ are the standard Pauli operators with support on the $j$-th site of the lattice.
 This Hamiltonian, in the tutorials, can be constructed in a simple way by employing the ALPS library and a dictionary of parameters.
 
-From there on, one can define an inital state and start using adaptive Max-Ent evolutions to evolve the system for arbitrarily long-term scales requiring hundreds of 
-thousands of actualizations.
+From there on, one can define an inital state and start using adaptive Max-Ent evolutions to evolve the system for arbitrarily long-term scales requiring hundreds or 
+thousands of actualizations. 
 ## Examples
 
-In Tutorials, a series of tutorials can be found, showcasing different examples and behaviours of interest. 
+In Tutorials, a series of tutorials can be found, showcasing different examples and behaviours of interest. Feel free to write your own and contact me for 
+bugs or comments!
